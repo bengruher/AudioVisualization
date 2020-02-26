@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<head>
+</head>
+<body>
+  <div id="observablehq-217613a6"></div>
+  <div id="observablehq-82ef5d3e"></div>
+</body>
+
+<script type="module">
+import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+import define from "https://api.observablehq.com/d/365ab7e2f604407e.js?v=3";
+const inspect = Inspector.into("#observablehq-82ef5d3e");
+const inspect2 = Inspector.into("#observablehq-217613a6");
+(new Runtime).module(
+  define, name => ((name === "chart") || (name === "viewof topicSelection")) && inspect() && inspect2()
+);
+
+// (new Runtime).module(define, name => (name === "viewof topicSelection") && inspect());
+</script>
