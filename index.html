@@ -1,19 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
+  <title>CPSC 5320 VA7</title>
+  <meta name="description" content="CPSC 5320 VA7">
 </head>
+
 <body>
-  <div id="observablehq-217613a6"></div>
-  <div id="observablehq-82ef5d3e"></div>
+    <div id="topic_selector"></div>
+    <div id="chart_warren"></div>
+    <div id="chart_sanders"></div>
+    <script type="module">
+        import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+        import notebook from "https://api.observablehq.com/@yf23/sanders-and-warren.js?v=3";
+
+        const renders = {
+            "viewof topicSelection": "#topic_selector",
+            "chart_warren": "#chart_warren",
+            "chart_sanders": "#chart_sanders"
+        }
+
+        function render(_node, value) {
+            if (!(value instanceof Element)) {
+                const el = document.createElement("span");
+                el.innerHTML = value;
+                value = el;
+            }
+            if (_node.firstChild !== value) {
+                if (_node.firstChild) {
+                    while (_node.lastChild !== _node.firstChild) _node.removeChild(_node.lastChild);
+                    _node.replaceChild(value, _node.firstChild);
+                } else {
+                    _node.appendChild(value);
+                }
+            }
+        }
+        const runtime = new Runtime();
+        const main = runtime.module(notebook, name => {
+            const selector = renders[name];
+            if (selector) {
+                return {fulfilled: (value) => render(document.querySelector(selector), value)}
+            } else {
+                return true;
+            }
+        });
+    </script>
 </body>
-
-<script type="module">
-import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
-import define from "https://api.observablehq.com/d/365ab7e2f604407e.js?v=3";
-const inspect = Inspector.into("#observablehq-82ef5d3e");
-const inspect2 = Inspector.into("#observablehq-217613a6");
-(new Runtime).module(
-  define, name => ((name === "chart") || (name === "viewof topicSelection")) && inspect() && inspect2()
-);
-
-// (new Runtime).module(define, name => (name === "viewof topicSelection") && inspect());
-</script>
